@@ -667,28 +667,28 @@ body.route-home main>section#znate-z{display:block!important;position:relative;i
     <h2 id="znate-z-title">Moji práci znáte z...</h2>
     <div class="known-from-projects" aria-label="Ukázky publikací na Humbooku">
       <article class="known-from-card">
-        <a class="known-from-image" href="images/humbook-fourth-wing.jpg" target="_blank" rel="noopener" aria-label="Otevřít ukázku příspěvku Humbooku ke Čtvrtému křídlu">
+        <a class="known-from-image" href="images/humbook-fourth-wing.jpg" aria-label="Otevřít ukázku příspěvku Humbooku ke Čtvrtému křídlu">
           <img src="images/humbook-fourth-wing.jpg" alt="Příspěvek Humbooku z 10. dubna 2024 s cosplay fotografiemi Violet a Xadena ze Čtvrtého křídla" loading="lazy">
         </a>
       </article>
       <article class="known-from-card">
-        <a class="known-from-image" href="images/humbook-nelitostny-lovec.jpg" target="_blank" rel="noopener" aria-label="Otevřít ukázku příspěvku Humbooku ke knize Nelítostný lovec">
+        <a class="known-from-image" href="images/humbook-nelitostny-lovec.jpg" aria-label="Otevřít ukázku příspěvku Humbooku ke knize Nelítostný lovec">
           <img src="images/humbook-nelitostny-lovec.jpg" alt="Příspěvek Humbooku z 27. února 2025 s cosplay fotografiemi Rune a Gideona ke knize Nelítostný lovec" loading="lazy">
         </a>
       </article>
       <article class="known-from-card">
-        <a class="known-from-image" href="images/humbook-elegie.jpg" target="_blank" rel="noopener" aria-label="Otevřít ukázku příspěvku Humbooku k Elegii zapomenutých bohů">
+        <a class="known-from-image" href="images/humbook-elegie.jpg" aria-label="Otevřít ukázku příspěvku Humbooku k Elegii zapomenutých bohů">
           <img src="images/humbook-elegie.jpg" alt="Příspěvek Humbooku z 26. září 2024 s cosplay fotografiemi Robin k Elegii zapomenutých bohů" loading="lazy">
         </a>
       </article>
       <article class="known-from-card">
-        <a class="known-from-image" href="images/concrunch-2024.jpg" target="_blank" rel="noopener" aria-label="Otevřít fotografii z cosplay foto soutěže ConCrunch 2024, druhé místo">
+        <a class="known-from-image" href="images/concrunch-2024.jpg" aria-label="Otevřít fotografii z cosplay foto soutěže ConCrunch 2024, druhé místo">
           <img src="images/concrunch-2024.jpg" alt="Cosplay fotografie oceněná druhým místem ve foto soutěži ConCrunch 2024" loading="lazy">
         </a>
         <p class="known-from-caption">2. místo ve fotosoutěži ConCrunch</p>
       </article>
       <article class="known-from-card">
-        <a class="known-from-image" href="images/concrunch-2025.jpg" target="_blank" rel="noopener" aria-label="Otevřít fotografii z cosplay foto soutěže ConCrunch 2025, první místo">
+        <a class="known-from-image" href="images/concrunch-2025.jpg" aria-label="Otevřít fotografii z cosplay foto soutěže ConCrunch 2025, první místo">
           <img src="images/concrunch-2025.jpg" alt="Cosplay fotografie oceněná prvním místem ve foto soutěži ConCrunch 2025" loading="lazy">
         </a>
         <p class="known-from-caption">1. místo ve foto soutěži ConCrunch</p>
@@ -875,11 +875,23 @@ if('IntersectionObserver' in window){
 
 const lightbox=document.getElementById('lightbox');
 const lightboxImg=document.getElementById('lightboxImg');
-document.querySelectorAll('.photo').forEach(el=>el.addEventListener('click',()=>{
-  const img=el.querySelector('img');
+function openPhoto(img){
   lightboxImg.src=img.src;lightboxImg.alt=img.alt;
   lightbox.classList.add('show');document.body.style.overflow='hidden';
+}
+document.querySelectorAll('.photo').forEach(el=>el.addEventListener('click',()=>{
+  const img=el.querySelector('img');
+  if(img) openPhoto(img);
 }));
+document.querySelectorAll('a.known-from-image').forEach(link=>{
+  link.removeAttribute('target');
+  link.removeAttribute('rel');
+  link.addEventListener('click',event=>{
+    event.preventDefault();
+    const img=link.querySelector('img');
+    if(img) openPhoto(img);
+  });
+});
 function closeLightbox(){lightbox.classList.remove('show');document.body.style.overflow='';}
 document.getElementById('close').addEventListener('click',closeLightbox);
 lightbox.addEventListener('click',event=>{if(event.target===lightbox)closeLightbox();});
