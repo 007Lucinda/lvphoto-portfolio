@@ -994,6 +994,7 @@ function applyGalleryFilter(filter){
   window.dispatchEvent(new Event('portfolio:galleryfilter'));
 }
 filterButtons.forEach(button=>button.addEventListener('click',()=>applyGalleryFilter(button.dataset.filter)));
+applyGalleryFilter(document.querySelector('.filter-btn.active')?.dataset.filter||'all');
 const contactForm=document.getElementById('contactForm');
 if(contactForm){
   const contactStatus=document.getElementById('contactStatus');
