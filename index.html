@@ -669,7 +669,7 @@ body.route-home main>section#znate-z{display:block!important;position:relative;i
 </style>
 
 <style id="photo-download-deterrents">
-#galerie img,.known-from-image,.known-from-image img,#lightbox img{-webkit-user-drag:none!important;user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none!important}
+#galerie img,.known-from-image,.known-from-image img,#omne img,#lightboxImg{pointer-events:none!important;-webkit-user-drag:none!important;user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none!important}
 #galerie,.known-from-projects,#lightbox,.hero,.quote-band{-webkit-touch-callout:none}
 </style>
 </head><body class="route-home"><button class="route-back" type="button" aria-label="Zpět na rozcestník">← Zpět na rozcestník</button><div aria-hidden="true" class="grain"></div><a class="brand" href="#uvod">Lucy Vaisová photography</a><button aria-controls="menu" aria-expanded="false" class="menu-btn" id="menuBtn">Menu +</button><nav aria-label="Hlavní navigace" class="menu" id="menu"><small>Prozkoumat</small><a href="#galerie">Galerie</a><a href="#omne">O mně</a><a href="#kontakt">Kontakt</a></nav><main><section class="gateway" id="rozcestnik" aria-label="Vyberte si cestu"><div class="gateway-inner"><p class="eyebrow">Lucy Vaisová photography</p><h1>Kam tě příběh<br><em>zavede?</em></h1><p class="gateway-intro">Každá cesta otevírá jiný svět. Vyber si, co chceš objevit.</p><div class="gateway-links"><a class="gateway-card" href="#galerie"><span class="gateway-number">01</span><span><strong>Vstoupit do galerie</strong><small>Fantasy, portréty, ostatní…</small></span></a><a class="gateway-card" href="#omne"><span class="gateway-number">02</span><span><strong>Poznat mě</strong><small>Kdo stojí za objektivem</small></span></a><a class="gateway-card" href="#projekt"><span class="gateway-number">03</span><span><strong>Objevit aktuální projekt</strong><small>Beyond the Frame</small></span></a><a class="gateway-card" href="#kontakt"><span class="gateway-number">04</span><span><strong>Domluvit focení</strong><small>Začít společný příběh</small></span></a><a class="gateway-card" href="#znate-z"><span class="gateway-number">05</span><span><strong>Moji práci znáte z...</strong><small>Místa a projekty, kde se objevila má tvorba</small></span></a></div></div></section>
@@ -963,15 +963,21 @@ function closeLightbox(){
 lightboxPrev.addEventListener('click',()=>stepPhoto(-1));
 lightboxNext.addEventListener('click',()=>stepPhoto(1));
  document.getElementById('close').addEventListener('click',closeLightbox);
-lightbox.addEventListener('click',event=>{if(event.target===lightbox)closeLightbox();});
+const pointOnLightboxImage=event=>{
+  const rect=lightboxImg.getBoundingClientRect();
+  return event.clientX>=rect.left&&event.clientX<=rect.right&&event.clientY>=rect.top&&event.clientY<=rect.bottom;
+};
+lightbox.addEventListener('click',event=>{if(event.target===lightbox&&!pointOnLightboxImage(event))closeLightbox();});
 let touchStartX=null;
-lightboxImg.addEventListener('pointerdown',event=>{touchStartX=event.pointerType==='touch'?event.clientX:null;});
-lightboxImg.addEventListener('pointerup',event=>{
+lightbox.addEventListener('pointerdown',event=>{
+  touchStartX=event.pointerType==='touch'&&pointOnLightboxImage(event)?event.clientX:null;
+});
+lightbox.addEventListener('pointerup',event=>{
   if(touchStartX===null||event.pointerType!=='touch') return;
   const delta=event.clientX-touchStartX;touchStartX=null;
   if(Math.abs(delta)>55) stepPhoto(delta<0?1:-1);
 });
-lightboxImg.addEventListener('pointercancel',()=>{touchStartX=null;});
+lightbox.addEventListener('pointercancel',()=>{touchStartX=null;});
 document.addEventListener('keydown',event=>{
   if(event.key==='Escape'){closeLightbox();toggleMenu(false);}
   if(!lightbox.classList.contains('show')) return;
