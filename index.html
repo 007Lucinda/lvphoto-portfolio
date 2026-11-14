@@ -1072,7 +1072,7 @@ document.querySelectorAll('.ba-slider').forEach(slider=>{
 
 <script id="photo-download-deterrents">
 (()=>{
- const protectedSelector='#galerie img,#galerie .photo,#galerie .ba-slider,.known-from-image,.known-from-image img,#lightbox img,.hero,.quote-band';
+ const protectedSelector='#galerie img,#galerie .photo,#galerie .ba-slider,.known-from-image,.known-from-image img,#lightbox,#lightbox img,.hero,.quote-band';
  const isProtected=target=>target instanceof Element&&!!target.closest(protectedSelector);
  document.addEventListener('contextmenu',event=>{
    if(isProtected(event.target)){event.preventDefault();event.stopImmediatePropagation();}
