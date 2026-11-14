@@ -742,7 +742,7 @@ body.route-home main>section#znate-z{display:block!important;position:relative;i
         <input type="range" min="0" max="100" value="50" aria-label="Porovnání před a po – Speciální efekty"/>
       </div>
     </div>
-    <div class="ba-card" data-ba-category="other">
+    <div class="ba-card" data-ba-category="other" data-hide-in-all="true">
       <div class="ba-label">Ostatní – portrét</div>
       <div class="ba-slider ba-slider-portrait" style="--split:50%">
         <img class="ba-after" src="images/ostatni/R7__7108.jpg" alt="Upravený studiový portrét v černém oblečení" loading="lazy"/>
@@ -987,7 +987,7 @@ function applyGalleryFilter(filter){
     if(show) card.classList.remove('is-visible');
   });
   document.querySelectorAll('.ba-card').forEach(card=>{
-    card.hidden=filter!=='all'&&card.dataset.baCategory!==filter;
+    card.hidden=filter==='all'?card.dataset.hideInAll==='true':card.dataset.baCategory!==filter;
   });
   const baBlock=document.querySelector('.before-after-block');
   if(baBlock) baBlock.classList.toggle('filter-active',filter!=='all');
